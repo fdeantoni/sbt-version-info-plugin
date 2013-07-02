@@ -22,13 +22,13 @@ To use:
 2. The VersionInfo trait relies on a couple of system properties to obtain the build number etc from the CI server.
    To pass these to Jenkins create an SBT start script that does the following:
 
-       #!/bin/bash
+        #!/bin/bash
 
-       cat /dev/null | java -Xmx1G -XX:MaxPermSize=250m \
-        -Dsbt.log.noformat=true \
-        -Dbuild.number="$BUILD_NUMBER" \
-        -Dbuild.vcs.branch="$GIT_BRANCH" \
-        -Dbuild.vcs.revision="$GIT_COMMIT" \
-        -jar sbt-launch.jar "$@"
+        cat /dev/null | java -Xmx1G -XX:MaxPermSize=250m \
+         -Dsbt.log.noformat=true \
+         -Dbuild.number="$BUILD_NUMBER" \
+         -Dbuild.vcs.branch="$GIT_BRANCH" \
+         -Dbuild.vcs.revision="$GIT_COMMIT" \
+         -jar sbt-launch.jar "$@"
 
    Alternatively you can put the properties in the "sbt Flags" field in the Jenkins build definition.
