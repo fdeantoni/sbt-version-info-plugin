@@ -1,3 +1,5 @@
+A fork of Guardian's sbt-version-info-plugin that places a little bit of extra data in the version.txt
+
 sbt-version-info-plugin
 =======================
 
