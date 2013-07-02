@@ -12,21 +12,23 @@ object VersionInfo extends Plugin {
     lazy val dequote = s.replace("\"", "")
   }
 
-  val branch = SettingKey[String]("version-branch")
   val buildNumber = SettingKey[String]("version-build-number")
-  val vcsNumber = SettingKey[String]("version-vcs-number")
+  val vcsBranch = SettingKey[String]("version-vcs-branch")
+  val vcsRevision = SettingKey[String]("version-vcs-revision")
 
   override val settings = Seq(
     buildNumber := System.getProperty("build.number", "DEV"),
-    branch := System.getProperty("build.vcs.branch", "DEV"),
-    vcsNumber := System.getProperty("build.vcs.number", "DEV"),
-    resourceGenerators in Compile <+= (resourceManaged in Compile, branch, buildNumber, vcsNumber, streams) map buildFile
+    vcsBranch := System.getProperty("build.vcs.branch", "DEV"),
+    vcsRevision := System.getProperty("build.vcs.revision", "DEV"),
+    resourceGenerators in Compile <+= (resourceManaged in Compile, name, version, vcsBranch, buildNumber, vcsRevision, streams) map buildFile
   )
 
-  def buildFile(outDir: File, branch: String, buildNum: String, vcsNum: String, s: TaskStreams) = {
+  def buildFile(outDir: File, projectName: String, projectVersion: String, vcsBranch: String, buildNum: String, vcsRevision: String, s: TaskStreams) = {
     val versionInfo = Map(
-      "Revision" -> vcsNum.dequote.trim,
-      "Branch" -> branch.dequote.trim,
+      "Project" -> projectName,
+      "Version" -> projectVersion,
+      "Revision" -> vcsRevision.dequote.trim,
+      "Branch" -> vcsBranch.dequote.trim,
       "Build" -> buildNum.dequote.trim,
       "Date" -> new Date().toString,
       "Built-By" -> System.getProperty("user.name", "<unknown>"),
